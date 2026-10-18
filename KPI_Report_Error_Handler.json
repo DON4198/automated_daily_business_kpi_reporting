@@ -1,0 +1,83 @@
+{
+  "name": "KPI_Report_Error_Handler",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "648466fe-e36a-4b74-9aca-57524ff1f986",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "={{ \"ALERT: Workflow Failed - \" + $now.format('yyyy-MM-dd') + \" - \" + $json.workflow.name }}",
+        "emailType": "text",
+        "message": "={{ \"WORKFLOW FAILURE ALERT\\n\\n\" + \"Workflow Name: \" + ($json.workflow?.name ?? \"Unknown\") + \"\\n\" + \"Failed Node: \" + ($json.execution?.lastNodeExecuted ?? \"Unknown\") + \"\\n\" + \"Error Details: \" + ($json.execution?.error?.message ?? \"No error message provided\") + \"\\n\" + \"Execution ID: \" + ($json.execution?.id ?? \"Unknown\") + \"\\n\" + \"Execution URL: \" + ($json.execution?.url ?? \"Not available\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "830e5023-a615-4916-8f63-64a34324049d",
+      "name": "SendErrorHandlerMail",
+      "webhookId": "31a84ba8-4fd5-4d81-8312-7861257b34d7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 272,
+        "width": 560,
+        "color": "#DBEAFE"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        -64
+      ],
+      "typeVersion": 1,
+      "id": "3172fec0-2288-411c-ba25-4793c3b95326",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "SendErrorHandlerMail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6bac9ce5-9317-48bd-9d12-fb0f95e1f417",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a4cac88541fd9d8248e68e9f288ba3e436902532f75ab5a4eb5c7669e36732ac"
+  },
+  "nodeGroups": [],
+  "id": "HmoFEYBaM7YrqmIR",
+  "tags": []
+}

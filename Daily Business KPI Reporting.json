@@ -1,0 +1,538 @@
+{
+  "name": "Daily Business KPI Reporting",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "031f7005-3659-49a0-aff1-ad92f33fdbc0",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -112,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://rpa-product-api.free.beeceptor.com/api/orders",
+        "options": {}
+      },
+      "id": "4d0aa3a9-9e4d-4221-b0b0-6c02e394b54a",
+      "name": "GetOrders",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://rpa-product-api.free.beeceptor.com/api/payments",
+        "options": {}
+      },
+      "id": "74b0d88f-56ed-4ae4-8947-f8d2363dde83",
+      "name": "GetPayments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Getting the Orders details from the Beeceptor's Mock API.",
+        "height": 240,
+        "color": "#FFF8CC"
+      },
+      "id": "68e21165-2ad3-450f-8ab5-a58f0b1d75e7",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Getting the Payments details from the Beeceptor's Mock API.",
+        "height": 240
+      },
+      "id": "d3dab504-7c27-4c98-9a95-029ecad22392",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Merging both Orders and Payments Data. It returns Orders array object and Payments array object.",
+        "height": 272,
+        "width": 272
+      },
+      "id": "af62800b-36f5-4f12-9506-7ac011ee4156",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Adds the current report date to the workflow output so that each KPI report is clearly identified by its reporting date.",
+        "height": 272
+      },
+      "id": "8026fb84-67fc-48de-9c7c-1ba8597d29a0",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        784,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "content": "What this code does\n\n\n- Validates that both APIs returned arrays.\n- Checks required fields, numeric amounts, and recognized statuses.\n- Calculates revenue using completed orders only.\n- Calculates order success rate, average order value, and payment failure rate.\n- Produces one structured JSON object for the report.",
+        "height": 384,
+        "width": 320
+      },
+      "id": "fc7cad29-0bbf-4bf9-89a8-3e3b4e1dce01",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Adding Validation before sending the email because we don't want to email a report when the API data is invalid.",
+        "height": 256
+      },
+      "id": "90760c99-b789-4845-9d82-06ad1ba06755",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Generate HTML Report (True Branch) – Purpose\n\n\n- Receives validated KPI data from the Code node.\n- Formats KPI values into a structured HTML report.\n- Displays business metrics in a readable table.\n- Prepares the HTML content for the Email node.\n- Ensures only validated data is included in the report.",
+        "height": 352,
+        "width": 384
+      },
+      "id": "c7e02b99-4199-4bc2-9351-308b297f7063",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        -368
+      ]
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\nPrepare Validation Alert — Purpose\n\n- Receives validation errors from the Code node.\n- Creates a readable alert message.\n- Passes the message to Gmail for notification.\n- Helps prevent invalid KPI data from being reported as valid.",
+        "height": 352,
+        "width": 400
+      },
+      "id": "a6c8d782-1fe3-4614-ba2c-ea581b0c3d58",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Sending KPI Report Email.",
+        "height": 208,
+        "width": 272
+      },
+      "id": "5deb991f-78ea-4a50-95ca-5e9c83f6abee",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        -240
+      ]
+    },
+    {
+      "parameters": {
+        "content": "Sending ALERT Email regarding the KPI Report Failure while generating.",
+        "height": 240,
+        "width": 272
+      },
+      "id": "361b9d86-8e48-46c1-811d-05c0ce1ac247",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "id": "fc4303b9-0d69-4e23-a9ed-683afe037d6b",
+      "name": "MergingOrdersPaymentsData",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        560,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf9a3620-beb0-4359-bdec-5678ea3f5182",
+              "name": "reportDate",
+              "value": "={{ $now.toUTC().toISODate() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "12dfe5ba-699a-4b1c-84ca-c97250fb6a3a",
+      "name": "AddReportDate",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        848,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "\n# =====================================================\n# Calculate And Validate KPIs\n# Scenario: Validate API data and calculate business KPIs\n# =====================================================\n\n# Get merged output from the previous node\ninput_data = _items[0][\"json\"]\n\norders = input_data.get(\"orders\")\npayments = input_data.get(\"payments\")\n\nerrors = []\n\n# -----------------------------------------------------\n# 1. Validate input arrays\n# -----------------------------------------------------\n\nif not isinstance(orders, list):\n    errors.append(\"Orders data is missing or is not a list.\")\n\nif not isinstance(payments, list):\n    errors.append(\"Payments data is missing or is not a list.\")\n\n# Stop if either input array is missing or invalid\nif errors:\n    return [{\n        \"json\": {\n            \"validation\": {\n                \"isValid\": False,\n                \"errors\": errors\n            }\n        }\n    }]\n\n# -----------------------------------------------------\n# 2. Validate order records\n# -----------------------------------------------------\n\nfor order in orders:\n    order_id = order.get(\"orderId\", \"unknown\")\n    amount = order.get(\"amount\")\n    status = order.get(\"status\")\n\n    if not order.get(\"orderId\"):\n        errors.append(\"Order record has a missing orderId.\")\n\n    # Reject strings, booleans, missing values and other\n    # non-numeric amounts\n    if not isinstance(amount, (int, float)) or isinstance(amount, bool):\n        errors.append(\n            f\"Order {order_id}: amount must be a number.\"\n        )\n    elif amount < 0:\n        errors.append(\n            f\"Order {order_id}: amount cannot be negative.\"\n        )\n\n    if status not in [\"completed\", \"cancelled\", \"pending\"]:\n        errors.append(\n            f\"Order {order_id}: invalid status.\"\n        )\n\n# -----------------------------------------------------\n# 3. Validate payment records\n# -----------------------------------------------------\n\nfor payment in payments:\n    payment_id = payment.get(\"paymentId\", \"unknown\")\n    payment_amount = payment.get(\"amount\")\n    payment_status = payment.get(\"status\")\n\n    if not payment.get(\"paymentId\"):\n        errors.append(\"Payment record has a missing paymentId.\")\n\n    if not payment.get(\"orderId\"):\n        errors.append(\n            f\"Payment {payment_id}: missing orderId.\"\n        )\n\n    if payment_status not in [\"success\", \"failed\", \"pending\"]:\n        errors.append(\n            f\"Payment {payment_id}: invalid status.\"\n        )\n\n    if (\n        not isinstance(payment_amount, (int, float))\n        or isinstance(payment_amount, bool)\n    ):\n        errors.append(\n            f\"Payment {payment_id}: amount must be a number.\"\n        )\n    elif payment_amount < 0:\n        errors.append(\n            f\"Payment {payment_id}: amount cannot be negative.\"\n        )\n\n# -----------------------------------------------------\n# 4. Return validation errors if any exist\n# -----------------------------------------------------\n\nif errors:\n    return [{\n        \"json\": {\n            \"validation\": {\n                \"isValid\": False,\n                \"errors\": errors\n            }\n        }\n    }]\n\n# -----------------------------------------------------\n# 5. Calculate order KPIs\n# -----------------------------------------------------\n\ncompleted_orders = [\n    order for order in orders\n    if order[\"status\"] == \"completed\"\n]\n\ncancelled_orders = [\n    order for order in orders\n    if order[\"status\"] == \"cancelled\"\n]\n\ntotal_orders = len(orders)\ncompleted_count = len(completed_orders)\n\ntotal_revenue = sum(\n    order[\"amount\"] for order in completed_orders\n)\n\norder_success_rate = (\n    completed_count / total_orders * 100\n    if total_orders else 0\n)\n\naverage_order_value = (\n    total_revenue / completed_count\n    if completed_count else 0\n)\n\n# -----------------------------------------------------\n# 6. Calculate payment KPIs\n# -----------------------------------------------------\n\nsuccessful_payments = [\n    payment for payment in payments\n    if payment[\"status\"] == \"success\"\n]\n\nfailed_payments = [\n    payment for payment in payments\n    if payment[\"status\"] == \"failed\"\n]\n\npending_payments = [\n    payment for payment in payments\n    if payment[\"status\"] == \"pending\"\n]\n\npayment_attempts = len(payments)\n\npayment_failure_rate = (\n    len(failed_payments) / payment_attempts * 100\n    if payment_attempts else 0\n)\n\n# -----------------------------------------------------\n# 7. Prepare KPI report\n# -----------------------------------------------------\n\nreport = {\n    \"reportDate\": input_data.get(\"reportDate\"),\n    \"currency\": \"INR\",\n    \"totalOrders\": total_orders,\n    \"completedOrders\": completed_count,\n    \"cancelledOrders\": len(cancelled_orders),\n    \"totalRevenue\": round(total_revenue, 2),\n    \"orderSuccessRate\": round(order_success_rate, 2),\n    \"averageOrderValue\": round(average_order_value, 2),\n    \"paymentAttempts\": payment_attempts,\n    \"successfulPayments\": len(successful_payments),\n    \"failedPayments\": len(failed_payments),\n    \"pendingPayments\": len(pending_payments),\n    \"paymentFailureRate\": round(payment_failure_rate, 2)\n}\n\n# -----------------------------------------------------\n# 8. Return successful validation and calculated KPIs\n# -----------------------------------------------------\n\nreturn [{\n    \"json\": {\n        \"validation\": {\n            \"isValid\": True,\n            \"errors\": []\n        },\n        \"kpis\": report\n    }\n}]\n"
+      },
+      "id": "883a7c9f-bb84-4910-aaeb-f96160deb464",
+      "name": "CalculateAndValidateKPIs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e51b3c0c-7ba5-482b-a1b4-dcdfc82f2125",
+              "leftValue": "={{ $json.validation.isValid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "afb50b40-9cae-4fa2-93fc-2c696aa31352",
+      "name": "ValidationGate",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1472,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Native Python: no imports allowed, read input via _items\ndef escape(text):\n    return (\n        str(text)\n        .replace(\"&\", \"&amp;\")\n        .replace(\"<\", \"&lt;\")\n        .replace(\">\", \"&gt;\")\n        .replace('\"', \"&quot;\")\n        .replace(\"'\", \"&#x27;\")\n    )\n\n# Get the validated KPI data from the previous node\ndata = _items[0][\"json\"]\nk = data[\"kpis\"]\n\n# Format currency in INR\ndef money(value):\n    return f\"₹{value:,.2f}\"\n\n# Build the HTML report\nreport_html = f\"\"\"\n<h2>Daily Business KPI Report</h2>\n<p><strong>Report date:</strong> {escape(str(k[\"reportDate\"]))}</p>\n\n<table border=\"1\" cellpadding=\"8\" cellspacing=\"0\"\n       style=\"border-collapse:collapse;\">\n  <tr>\n    <th align=\"left\">Metric</th>\n    <th align=\"right\">Value</th>\n  </tr>\n  <tr><td>Total orders</td><td align=\"right\">{k[\"totalOrders\"]}</td></tr>\n  <tr><td>Completed orders</td><td align=\"right\">{k[\"completedOrders\"]}</td></tr>\n  <tr><td>Cancelled orders</td><td align=\"right\">{k[\"cancelledOrders\"]}</td></tr>\n  <tr><td>Total revenue</td><td align=\"right\">{money(k[\"totalRevenue\"])}</td></tr>\n  <tr><td>Order success rate</td><td align=\"right\">{k[\"orderSuccessRate\"]}%</td></tr>\n  <tr><td>Average order value</td><td align=\"right\">{money(k[\"averageOrderValue\"])}</td></tr>\n  <tr><td>Payment attempts</td><td align=\"right\">{k[\"paymentAttempts\"]}</td></tr>\n  <tr><td>Successful payments</td><td align=\"right\">{k[\"successfulPayments\"]}</td></tr>\n  <tr><td>Failed payments</td><td align=\"right\">{k[\"failedPayments\"]}</td></tr>\n  <tr><td>Pending payments</td><td align=\"right\">{k[\"pendingPayments\"]}</td></tr>\n  <tr><td>Payment failure rate</td><td align=\"right\">{k[\"paymentFailureRate\"]}%</td></tr>\n</table>\n\n<p><em>Automatically generated by n8n.</em></p>\n\"\"\"\n\n# Return the report and original KPI data\nreturn [{\n    \"json\": {\n        \"kpis\": k,\n        \"reportHtml\": report_html\n    }\n}]"
+      },
+      "id": "f67a1602-2971-4031-b884-bde048c20b0c",
+      "name": "Generate_KPI_HTML_Report",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1824,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "=Daily Business KPI Report - {{ $json.kpis.reportDate }}",
+        "message": "={{ $json.reportHtml }}",
+        "options": {}
+      },
+      "id": "9cd2666e-a949-4f75-87cd-b545ea357a68",
+      "name": "SendEmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2224,
+        -192
+      ],
+      "webhookId": "33761f1e-5a01-4ee3-86ba-defce7d90288",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b44b570a-9b18-4634-b503-b7994f136ba0",
+              "name": "alertMessage",
+              "value": "={{ \"Daily KPI report generation failed.\\n\" + \"Reason: \" + $json.validation.errors.join(\"; \\n\") }}",
+              "type": "string"
+            },
+            {
+              "id": "6f84b1bc-1a69-4887-9cf2-f58ce2f0dd7d",
+              "name": "reportDate",
+              "value": "={{ $('AddReportDate').item.json.reportDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9967c1d4-70c2-4e65-85ed-0e51d843ed59",
+      "name": "PrepareValidationAlert",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1824,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "=ALERT: Daily KPI Report Validation Failed - {{ $json.reportDate }}",
+        "emailType": "text",
+        "message": "={{ $json.alertMessage }}",
+        "options": {}
+      },
+      "id": "1ed10371-f708-43fb-9cc0-c54aa75268a5",
+      "name": "ALERTEmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2224,
+        128
+      ],
+      "webhookId": "702f96c7-7550-4d46-8029-9282dadf5e71",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 1024,
+        "width": 2896,
+        "color": "#DBEAFE"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -288,
+        -480
+      ],
+      "typeVersion": 1,
+      "id": "254e1d38-4e7e-462a-9653-0fde283d3456",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "Scheduling this trigger for everyday at 9 AM IST ",
+        "height": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -176,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "246d06b3-c2b5-4c86-9163-0a8dc4bd8cf8",
+      "name": "Sticky Note11"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "GetOrders",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetPayments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetOrders": {
+      "main": [
+        [
+          {
+            "node": "MergingOrdersPaymentsData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetPayments": {
+      "main": [
+        [
+          {
+            "node": "MergingOrdersPaymentsData",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "MergingOrdersPaymentsData": {
+      "main": [
+        [
+          {
+            "node": "AddReportDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AddReportDate": {
+      "main": [
+        [
+          {
+            "node": "CalculateAndValidateKPIs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CalculateAndValidateKPIs": {
+      "main": [
+        [
+          {
+            "node": "ValidationGate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ValidationGate": {
+      "main": [
+        [
+          {
+            "node": "Generate_KPI_HTML_Report",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "PrepareValidationAlert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate_KPI_HTML_Report": {
+      "main": [
+        [
+          {
+            "node": "SendEmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PrepareValidationAlert": {
+      "main": [
+        [
+          {
+            "node": "ALERTEmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "HmoFEYBaM7YrqmIR",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timezone": "Asia/Kolkata"
+  },
+  "versionId": "cb310a99-e486-4cca-8004-c6805c4e12a6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a4cac88541fd9d8248e68e9f288ba3e436902532f75ab5a4eb5c7669e36732ac"
+  },
+  "nodeGroups": [],
+  "id": "Bzm4Z92EJCtCjAWW",
+  "tags": []
+}
